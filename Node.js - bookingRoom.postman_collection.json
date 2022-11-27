@@ -1,0 +1,823 @@
+{
+	"info": {
+		"_postman_id": "8261b202-9701-4314-94c0-c64988af5e19",
+		"name": "Node.js - bookingRoom",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9583539"
+	},
+	"item": [
+		{
+			"name": "會員功能",
+			"item": [
+				{
+					"name": "取得個人資料",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users/profile",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "註冊",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"john0\",\r\n    \"email\":\"john0@gmail.com\",\r\n    \"password\":\"12345678io\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/users/sign_up",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登入",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"john0@gmail.com\",\r\n    \"password\":\"12345678io\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/users/sign_in",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "重設密碼",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\":\"1q2w3e4r\",\n    \"confirmPassword\": \"1q2w3e4r\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/users/update_password",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"update_password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新個人資料",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Mary\",\n    \"gender\": 1,\n    \"avatar\": \"https://i.imgur.com/xxx.png\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/users/profile",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "會員訂房",
+			"item": [
+				{
+					"name": "取得個人訂房列表",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/users/{{USER_ID}}/booking",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"users",
+								"{{USER_ID}}",
+								"booking"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "藍新金流 - (step1) 建立訂單",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "roomID",
+									"value": "{{ROOM_ID}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/payments/createOrder",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"payments",
+								"createOrder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "藍新金流 - (step2) 加解密",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "amt",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "roomID",
+									"value": "{{ROOM_ID}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/payments/getOrder/{{MERCHANT_ORDER_NO}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"payments",
+								"getOrder",
+								"{{MERCHANT_ORDER_NO}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "房型資訊",
+			"item": [
+				{
+					"name": "取得或搜尋所有房型",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/rooms?q=&sort=desc",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": ""
+								},
+								{
+									"key": "sort",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得一間房型的資訊",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/info",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一間房型",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomName\": \"晚安二號\",\r\n    \"roomNumber\": [2,3],\r\n    \"maxPeople\": 3,\r\n    \"description\": \"美夢美夢\",\r\n    \"image\": [\"https://www.123.com/456.png\"],\r\n    \"price\": 3500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一間房型的按讚",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/likes",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一間房型的評價",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rating\": 4.9\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/rating",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"rating"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一間房型的留言",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"好棒棒\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/comment",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改一間房型的資訊",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomName\": \"晚安三號\",\r\n    \"roomNumber\": [4,5],\r\n    \"description\": \"安穩舒適\",\r\n    \"image\": [\"https://www.789.com/000.png\"],\r\n    \"price\": 5500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/info",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改一間房型的評價",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\": \"3.2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/rating/{{RATING_ID}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"rating",
+								"{{RATING_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "修改一間房型的留言",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"Good\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/comment/{{COMMENT_ID}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"comment",
+								"{{COMMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除一間房型的資訊",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/info",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消一間房型的按讚",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/likes",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除一間房型的評價",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/rating/{{RATING_ID}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"rating",
+								"{{RATING_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "刪除一間房型的留言",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/rooms/{{ROOM_ID}}/comment/{{COMMENT_ID}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"rooms",
+								"{{ROOM_ID}}",
+								"comment",
+								"{{COMMENT_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "上傳圖片",
+			"item": [
+				{
+					"name": "上傳圖片",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{BOOKINGROOM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": "/Users/daisord/Desktop/oneByone.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/uploads",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"uploads"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://127.0.0.1:3005",
+			"type": "string"
+		}
+	]
+}
